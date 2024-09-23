@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view("products");
+        $products = Product::latest()->paginate(5);
+        return view("products", compact("products"));
     }
 
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|unique:products',
-                'price' => 'required'
-            ],
-            [
-                'name.required' => 'Name is Required',
-                'name.unique' => 'Product Already Exists',
-                'price.required' => 'Price is Required',
-            ]
-        );
+        $validatedData = $request->validated();
+        Product::create($validatedData);
+        
+        return response()->json([
+            "status" => "success",
+        ]);
     }
 }

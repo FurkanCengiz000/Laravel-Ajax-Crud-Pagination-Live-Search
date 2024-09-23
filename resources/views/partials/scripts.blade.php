@@ -22,9 +22,17 @@
                     url: "{{ route('add.product') }}",
                     method: 'POST',
                     data: {name:name, price:price},
-                    success: function(res){
-
-                    },error: function(err){
+                    success: function(res)
+                    {
+                        if(res.status == "success")
+                        {
+                         $('#addModal').modal("hide");   
+                         $('#addProductForm')[0].reset();
+                         $('.table-data').load(location.href + ' .table-data');
+                        }
+                    },
+                    error: function(err)
+                    {
                         let error = err.responseJSON;
                         $.each(error.errors, function(index, value){
                             $(".errMsgContainer").append('<span class="text-danger"></span>' + value + '</span>' + '<br>');
