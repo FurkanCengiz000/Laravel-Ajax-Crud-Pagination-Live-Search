@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProductRequest extends FormRequest
+class ProductFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +21,17 @@ class CreateProductRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|unique:products',
             'price' => 'required',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            // Güncelleme işlemi için, mevcut kaydı unique kontrolünden hariç tutuyoruz
+            $rules['name'] = 'required|unique:products,name,' . $this->route('id');
+        }
+
+        return $rules;
     }
 
     // Custom error messages

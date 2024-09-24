@@ -1,6 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <form action="" method="POST" id="updateProductForm">
+        <input type="hidden" name="up_id" id="up_id">
         @csrf
         <input type="hidden" name="up_id">
         <div class="modal-dialog">
