@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductFormRequest extends FormRequest
 {
@@ -21,17 +22,13 @@ class ProductFormRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
-            'name' => 'required|unique:products',
+        return [
+            'name' => [
+                'required',
+                Rule::unique('products')->ignore($this->input('id')),
+            ],
             'price' => 'required',
         ];
-
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            // Güncelleme işlemi için, mevcut kaydı unique kontrolünden hariç tutuyoruz
-            $rules['name'] = 'required|unique:products,name,' . $this->route('id');
-        }
-
-        return $rules;
     }
 
     // Custom error messages
