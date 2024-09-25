@@ -60,6 +60,9 @@
     @include('partials.scripts')
     @include('product.create')
     @include('product.update')
+    {!! Toastr::message() !!}
+
+
 
 </body>
 
