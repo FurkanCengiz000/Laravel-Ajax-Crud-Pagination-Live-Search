@@ -42,7 +42,7 @@
                                             class="btn btn-success update_product_form">
                                             <i class="las la-edit"></i>
                                         </a>
-                                        <a href="" class="btn btn-danger">
+                                        <a href="" class="btn btn-danger delete_product" data-id = "{{ $product->id }}">
                                             <i class="las la-times"></i>
                                         </a>
                                     </td>

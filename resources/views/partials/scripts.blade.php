@@ -90,5 +90,33 @@
                 }
             });
         })
+
+        // Delete Product Data
+        $(document).on('click', '.delete_product', function(e) {
+            e.preventDefault();
+            let product_id = $(this).data('id');
+
+            let url = "{{ route('delete.product', ':id') }}";
+            url = url.replace(':id', product_id);
+
+            if (confirm('Are You Sure To Delete This Product?')) {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _method: 'DELETE',
+                        id: product_id,
+                    },
+                    success: function(res) {
+                        if (res.status == "success") {
+                            $('.table-data').load(location.href + ' .table-data');
+                        }
+                    }
+                });
+            }
+
+
+        })
+
     });
 </script>

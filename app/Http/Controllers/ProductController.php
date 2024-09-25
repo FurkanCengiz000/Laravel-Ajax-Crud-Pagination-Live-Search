@@ -34,4 +34,13 @@ class ProductController extends Controller
             "status" => "success",
         ]);
     }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+
+        return response()->json([
+            "status" => "success",
+        ]);
+    }
 }
