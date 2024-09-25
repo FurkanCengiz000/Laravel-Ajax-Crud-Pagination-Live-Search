@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductFormRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Services\ProductService;
+use App\Traits\JsonResponseTrait;
 
 class ProductController extends Controller
 {
+    use JsonResponseTrait;
+
     public function index()
     {
-        $products = Product::latest()->paginate(5);
+        $products = (new ProductService())->getPaginatedProducts();
         return view("products", compact("products"));
     }
 
@@ -19,28 +22,20 @@ class ProductController extends Controller
         $validatedData = $request->validated();
         Product::create($validatedData);
 
-        return response()->json([
-            "status" => "success",
-        ]);
+        return $this->jsonResponse("success");
     }
 
-    public function update(ProductFormRequest $request)
+    public function update(ProductFormRequest $request, Product $product)
     {
         $validatedData = $request->validated();
+        $product->update($validatedData);
 
-        Product::where('id', $request->id)->update($validatedData);
-
-        return response()->json([
-            "status" => "success",
-        ]);
+        return $this->jsonResponse("success");
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return response()->json([
-            "status" => "success",
-        ]);
+        return $this->jsonResponse("success");
     }
 }

@@ -64,8 +64,11 @@
             let up_name = $("#up_name").val();
             let up_price = $("#up_price").val();
 
+            let url = "{{ route('update.product', ':id') }}";
+            url = url.replace(':id', up_id);
+
             $.ajax({
-                url: "{{ route('update.product') }}",
+                url: url,
                 method: 'POST',
                 data: {
                     _method: 'PUT',
