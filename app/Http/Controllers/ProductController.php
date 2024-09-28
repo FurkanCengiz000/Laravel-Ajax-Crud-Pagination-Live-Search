@@ -6,6 +6,7 @@ use App\Http\Requests\ProductFormRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use App\Traits\JsonResponseTrait;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -37,5 +38,10 @@ class ProductController extends Controller
     {
         $product->delete();
         return $this->jsonResponse("success");
+    }
+    public function pagination(Request $request)
+    {
+        $products = (new ProductService())->getPaginatedProducts();
+        return view("product.pagination", compact("products"));
     }
 }

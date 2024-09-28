@@ -34,7 +34,7 @@
                         $('#addProductForm')[0].reset();
                         $('.table-data').load(location.href + ' .table-data');
                         Command: toastr["success"]("Product Has Been Created", "Success")
-                            toastr.options = {
+                        toastr.options = {
                             "closeButton": true,
                             "debug": false,
                             "newestOnTop": false,
@@ -50,7 +50,7 @@
                             "hideEasing": "linear",
                             "showMethod": "fadeIn",
                             "hideMethod": "fadeOut"
-                            }
+                        }
                     }
                 },
                 error: function(err) {
@@ -101,7 +101,7 @@
                         $('#updateProductForm')[0].reset();
                         $('.table-data').load(location.href + ' .table-data');
                         Command: toastr["success"]("Product Has Been Updated", "Success")
-                            toastr.options = {
+                        toastr.options = {
                             "closeButton": true,
                             "debug": false,
                             "newestOnTop": false,
@@ -117,7 +117,7 @@
                             "hideEasing": "linear",
                             "showMethod": "fadeIn",
                             "hideMethod": "fadeOut"
-                            }
+                        }
                     }
                 },
                 error: function(err) {
@@ -150,23 +150,24 @@
                     success: function(res) {
                         if (res.status == "success") {
                             $('.table-data').load(location.href + ' .table-data');
-                            Command: toastr["success"]("Product Has Been Deleted", "Success")
+                            Command: toastr["success"]("Product Has Been Deleted",
+                                "Success")
                             toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
                             }
                         }
                     }
@@ -175,6 +176,27 @@
 
 
         })
+
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            let url = "{{ route('pagination.product') }}?page=" + page;
+            product(url);
+        });
+
+        function product(url) {
+            $.ajax({
+                url: url,
+                success: function(res) {
+                    $('.table-data').html(res);
+                },
+                error: function() {
+                    alert("An error occurred while loading data.");
+                }
+            });
+        }
+
+
 
     });
 </script>
