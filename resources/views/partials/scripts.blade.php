@@ -176,7 +176,7 @@
 
 
         })
-
+        // Pagination
         $(document).on('click', '.pagination a', function(e) {
             e.preventDefault();
             let page = $(this).attr('href').split('page=')[1];
@@ -195,6 +195,28 @@
                 }
             });
         }
+
+        // Search  Product
+        $(document).on('keyup', function(e){
+            e.preventDefault();
+            let search_data = $("#search").val();
+
+            $.ajax({
+                url:"{{ route('search.product') }}",
+                method: "GET",
+                data: {search:search_data},
+                success:function(res)
+                {
+                    $('.table-data').html(res);
+                    console.log(res);
+                    if(res.status == "nothing_found")
+                    {
+                        $('.table-data').html('<div class="alert alert-danger" role="alert"> Nothing Found </div>')
+                    }
+                }
+            })
+
+        })
 
 
 

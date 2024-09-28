@@ -3,25 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductFormRequest;
+use App\Http\Requests\ProductSearchRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use App\Traits\JsonResponseTrait;
+use App\Traits\ProductSearchTrait;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    use JsonResponseTrait;
+    use JsonResponseTrait, ProductSearchTrait;
+
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
 
     public function index()
     {
-        $products = (new ProductService())->getPaginatedProducts();
+        $products = $this->productService->getPaginatedProducts();
         return view("products", compact("products"));
     }
 
     public function store(ProductFormRequest $request)
     {
         $validatedData = $request->validated();
-        Product::create($validatedData);
+        $this->productService->storeProduct($validatedData);
 
         return $this->jsonResponse("success");
     }
@@ -29,19 +38,28 @@ class ProductController extends Controller
     public function update(ProductFormRequest $request, Product $product)
     {
         $validatedData = $request->validated();
-        $product->update($validatedData);
+        $this->productService->updateProduct($product, $validatedData);
 
         return $this->jsonResponse("success");
     }
 
     public function destroy(Product $product)
     {
-        $product->delete();
+        $this->productService->deleteProduct($product);
         return $this->jsonResponse("success");
     }
+
     public function pagination(Request $request)
     {
-        $products = (new ProductService())->getPaginatedProducts();
-        return view("product.pagination", compact("products"));
+        $products = $this->productService->getPaginatedProducts();
+        return view("partials.table", compact("products"))->render();
+    }
+    
+    public function search(ProductSearchRequest $request)
+    {
+        $searchTerm = $request->sanitize();
+        $products = $this->productService->searchProducts($searchTerm);
+
+        return $this->prepareResponse($products);
     }
 }

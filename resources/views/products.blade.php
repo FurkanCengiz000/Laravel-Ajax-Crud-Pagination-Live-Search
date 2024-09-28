@@ -19,6 +19,7 @@
                 <h2 class="mt-5 mb-5 text-center">Laravel Ajax Crud</h2>
                 <a href="" class="btn btn-success mt-3 mb-3" data-bs-toggle="modal"
                     data-bs-target="#addModal">Add Product</a>
+                    <input type="text" name="search" id="search" class="mb-3 form-control" placeholder="Search Here ...">
                 <div class="table-data">
                     @include('partials.table')
                 </div>
